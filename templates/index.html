@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Генератор договоров аренды недвижимого имущества</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <h1>Генератор договоров аренды<br> недвижимого имущества</h1>
+
+    <form action="/generate_doc" method="POST" class="form-container">
+        <div class="form-section">
+            <h2>Арендодатель</h2>
+            <label for="company">Арендодатель:</label>
+            <select id="company" name="company">
+                {% for key, value in companies.items() %}
+                    <option value="{{ key }}">{{ value.orgLandlord }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-section">
+            <h2>Договор</h2>
+
+            <label for="docID">Номер договора:</label>
+            <div class="example-text">
+                <input type="text" id="docID" name="docID">
+                <span class="example">Пример: В-АД/2014</span>
+            </div>
+
+            <label for="docDate">Дата заключения договора:</label>
+            <input type="date" id="docDate" name="docDate">
+
+            <label for="validityTime">На какой срок заключается договор:</label>
+            <div class="inline-form">
+                <input type="text" id="validityTime" name="validityTime">
+                <select id="periodUnit" name="periodUnit">
+                    <option value="дней">дней</option>
+                    <option value="год">год</option>
+                    <option value="лет">лет</option>
+                </select>
+            </div>
+
+            <label for="rentalPrice">Стоимость аренды:</label>
+            <input type="text" id="rentalPrice" name="rentalPrice">
+
+            <label for="rentalStartDate">Дата начала аренды:</label>
+            <input type="date" id="rentalStartDate" name="rentalStartDate">
+
+            <label for="rentalObject">Объект недвижимого имущества:</label>
+            <div class="example-text">
+                <input type="text" id="rentalObject" name="rentalObject">
+                <span class="example">Пример: нежилое помещение, расположенное по адресу: г. Владивосток...</span>
+            </div>
+
+            <label for="rightsRegistrationDoc">Документ, подтверждающий право собственности:</label>
+            <div class="example-text">
+                <input type="text" id="rightsRegistrationDoc" name="rightsRegistrationDoc">
+                <span class="example">Пример: свидетельство о государственной регистрации права собственности</span>
+            </div>
+
+            <label for="rightsRegistrationDocSeriesAndNumber">Серия и номер документа:</label>
+            <div class="example-text">
+                <input type="text" id="rightsRegistrationDocSeriesAndNumber" name="rightsRegistrationDocSeriesAndNumber">
+                <span class="example">Пример: 25-АВ № 114740</span>
+            </div>
+
+            <label for="rightsRegistrationDocIssuedDate">Дата выдачи документа:</label>
+            <input type="date" id="rightsRegistrationDocIssuedDate" name="rightsRegistrationDocIssuedDate">
+
+            <label for="activityType">Вид осуществляемой деятельности в отношении объекта:</label>
+            <div class="example-text">
+                <input type="text" id="activityType" name="activityType">
+                <span class="example">Пример: для осуществления предпринимательской деятельности (должно быть предусмотрено Уставом)</span>
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h2>Арендатор:</h2>
+            <label for="orgTenant">Полное наименование юридического лица арендатора:</label>
+            <div class="example-text">
+                <input type="text" id="orgTenant" name="orgTenant">
+                <span class="example">Пример: Общество с ограниченной ответственностью "Рога и Копыта"</span>
+            </div>
+
+            <label for="orgTenantPost">Должность:</label>
+            <div class="example-text">
+                <input type="text" id="orgTenantPost" name="orgTenantPost">
+                <span class="example">Пример: Генеральный директор, Директор..</span>
+            </div>
+
+            <label for="orgTenantFullname">Полное ФИО:</label>
+            <div class="example-text">
+                <input type="text" id="orgTenantFullname" name="orgTenantFullname">
+                <span class="example">Пример: Иванов Иван Иванович</span>
+            </div>
+
+            <label for="orgTenantDoc">Документ, на основании которого действует Арендатор:</label>
+            <div class="example-text">
+                <input type="text" id="orgTenantDoc" name="orgTenantDoc">
+                <span class="example">Пример: Устав</span>
+            </div>
+
+            <label for="orgTenantRegAddress">Юридический адрес:</label>
+            <input type="text" id="orgTenantRegAddress" name="orgTenantRegAddress">
+
+            <label for="orgTenantINN">ИНН:</label>
+            <input type="text" id="orgTenantINN" name="orgTenantINN">
+
+            <label for="orgTenantKPP">КПП:</label>
+            <input type="text" id="orgTenantKPP" name="orgTenantKPP">
+
+            <label for="orgTenantBank">Банк:</label>
+            <input type="text" id="orgTenantBank" name="orgTenantBank">
+
+            <label for="orgTenantChA">р/сч:</label>
+            <input type="text" id="orgTenantChA" name="orgTenantChA">
+
+            <label for="orgTenantCorrA">к/сч:</label>
+            <input type="text" id="orgTenantCorrA" name="orgTenantCorrA">
+
+            <label for="orgTenantBIK">БИК:</label>
+            <input type="text" id="orgTenantBIK" name="orgTenantBIK">
+
+            <label for="orgTenantOGRN">ОГРН:</label>
+            <input type="text" id="orgTenantOGRN" name="orgTenantOGRN">
+
+            <label for="orgTenantTel">Тел./факс:</label>
+            <input type="tel" id="orgTenantTel" name="orgTenantTel">
+
+            <label for="orgTenantEmail">E-mail:</label>
+            <input type="email" id="orgTenantEmail" name="orgTenantEmail">
+        </div>
+
+        <button type="submit">Сгенерировать</button>
+    </form>
+</body>
+</html>
